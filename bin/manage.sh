@@ -11,4 +11,4 @@ if [ -z $1 ]; then
 	return
 fi
 
-docker-compose exec pretix bash -c "python /pretix/src/manage.py $1"
+docker compose exec pretix bash -c "python /pretix/src/manage.py $1"

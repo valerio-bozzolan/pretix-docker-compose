@@ -1,3 +1,3 @@
 #!/usr/bin/env bash
 
-docker-compose exec pretix bash
+docker compose exec pretix bash
