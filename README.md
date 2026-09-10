@@ -168,6 +168,8 @@ Pretix itself is available under the Free Software license GNU Affero General Pu
 
 https://pretix.eu/
 
+https://docs.pretix.eu/trust/licensing/faq/
+
 https://github.com/pretix/pretix
 
 PostgreSQL is Free Software available under the PostgreSQL License.
