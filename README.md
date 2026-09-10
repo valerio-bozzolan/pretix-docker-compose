@@ -19,10 +19,6 @@
 * https://docs.pretix.eu/en/latest/admin/installation/docker_smallscale.html#next-steps
 * https://docs.pretix.eu/en/latest/development/setup.html
 
-### Contract Notes:
-
-* https://medium.com/coinmonks/a-really-simple-smart-contract-on-how-to-insert-value-into-the-ethereum-blockchain-and-display-it-62c455610e98
-
 ### Pretix Dashboard
 
 * Dashboard: `http://localhost:8000/control/`
