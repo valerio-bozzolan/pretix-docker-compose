@@ -5,7 +5,13 @@ for any other external service.
 
 ## Configuration
 
-* `cp ./data/postfix/etc/pretix.cfg.template ./data/postfix/etc/pretix.cfg` # Fill in the blanks
+Copy the default configuration file:
+
+```
+cp ./data/postfix/etc/pretix.cfg.template ./data/postfix/etc/pretix.cfg
+```
+
+And fill in the blanks.
 
 ## Up
 
