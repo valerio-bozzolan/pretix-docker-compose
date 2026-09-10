@@ -1,60 +1,44 @@
-version: '3'
 services:
   database:
-    image: postgres:9.6-alpine
-    container_name: database
-    ports:
-      - "5432:5432"
-    environment: 
+    image: postgres:17-alpine
+#   # Exposing the database may be useful only for local development.
+#   # To expose it (why?), create a Docker Compose override file.
+#    ports:
+#      - "5432:5432"
+    environment:
       - POSTGRES_USER=pretix
-      - POSTGRES_PASSWORD=
+      - POSTGRES_PASSWORD
     volumes:
-      - postgres:/var/lib/postgresql/data
+      - postgres_data:/var/lib/postgresql/data
     networks:
       - backend
 
   redis:
-    image: redis:latest
-    container_name: cache
-    ports:
-      - "6379:6379"
+    image: redis:8-alpine
+#   # Exposing Redis may be useful only for local development.
+#   # To expose it (why?), create a Docker Compose override file.
+#    ports:
+#      - "6379:6379"
     networks:
       - backend
 
   pretix:
     image: pretix/standalone:stable
-    container_name: pretix
     depends_on:
       - database
       - redis
     ports:
-      - "8000:80"
+      - "$PRETIX_LISTEN:80"
     volumes:
-      - ./etc/pretix.cfg:/etc/pretix/pretix.cfg
-      - data:/data
-      - src:/pretix/src
+      - ./data/postfix/etc/pretix.cfg:/etc/pretix/pretix.cfg
+      - pretix_data:/data
     networks:
       - backend
 
 volumes:
-  data:
-    driver: local
-    driver_opts:
-      type: 'none'
-      o: 'bind'
-      device: ${PWD}/rootfs/data
-  postgres:
-    driver: local
-    driver_opts:
-      type: 'none'
-      o: 'bind'
-      device: ${PWD}/rootfs/postgres
-  src:
-    driver: local
-    driver_opts:
-      type: 'none'
-      o: 'bind'
-      device: ${PWD}/rootfs/src
+  pretix_data:
+  postgres_data:
+  pretix_src:
 
 networks:
   backend:
