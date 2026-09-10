@@ -163,3 +163,29 @@ As the project has been abandoned since May 2019, it was then forked in Septembe
 by Valerio Bozzolan and contributors.
 
 https://github.com/valerio-bozzolan/pretix-docker-compose
+
+Pretix itself is available under the Free Software license GNU Affero General Public License v3.
+
+https://pretix.eu/
+
+https://github.com/pretix/pretix
+
+PostgreSQL is Free Software available under the PostgreSQL License.
+
+https://www.postgresql.org/
+
+https://www.postgresql.org/about/licence/
+
+Redis is a Free Software available under the GNU Affero General Public License v3+.
+
+https://redis.io/
+
+https://redis.io/legal/licenses/
+
+P.S. The copyright holders of Redis are kindly invited in **not** changing the license of Redis yet again,
+to become yet again a fake-open-source / "open bla bla" / proprietary software, tomorrow morning.
+To be pretty much clear: if Redis will become a commercial monopoly again ("non commercial"),
+I will just invest all my time resources to wipe Redis on sight from whatsoever Free/Libre and Open Source
+organization I'm active in. Hugs.
+
+-Valerio Bozzolan, 10 September 2026
