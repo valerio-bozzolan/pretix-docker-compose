@@ -48,7 +48,7 @@ http://localhost:8000
 
 To change this port, edit the file `.env` and personalize the option `PRETIX_LISTEN`.
 
-### Cron
+## Cron
 
 Pretix has a job which should be executed at least every hour. Manual execution:
 
@@ -63,12 +63,75 @@ sudo crontab -e
 0 */10 * * * cd /path/to/pretix-docker-compose && docker compose run --rm pretix cron > /dev/null
 ```
 
-### Pretix Notes:
+## Frontend webserver
+
+Pretix is designed to work plaintext, in HTTP. To serve HTTPs you need a frontend webserver, like Apache HTTPd or nginx.
+
+The DNS record `pretix.example.com` should indeed point to that frontend webserver.
+
+Assuming you already have an Apache HTTPd webserver running, the goal is to create a new virtualhost, serving https, to proxy all requests to the running Pretix.
+
+Assuming you want Apache in Debian, to install it:
+
+```
+sudo apt update
+sudo apt install apache2
+```
+
+Then save this configuration file as `/etc/apache2/sites-available/pretix.conf`, replacing `pretix.example.com` with your domain:
+
+```
+<VirtualHost *:443>
+        ServerName pretix.example.com
+
+        DocumentRoot /var/www/html
+
+        ProxyPreserveHost on
+
+        RemoteIPHeader X-Forwarded-For
+
+        SSLProxyEngine on
+        <Location />
+                ProxyPass        http://localhost:8000/
+                ProxyPassReverse http://localhost:8000/
+        </Location>
+
+        #
+        # Let's Encrypt certificates
+        #
+        # Issued with:
+        #    certbot certonly --webroot --webroot-path=/var/www/html -d pretix.example.com
+        #
+        <IfFile /etc/letsencrypt/live/pretix.example.com/cert.pem>
+                SSLEngine on
+                SSLCertificateFile      /etc/letsencrypt/live/pretix.example.com/cert.pem
+                SSLCertificateKeyFile   /etc/letsencrypt/live/pretix.example.com/privkey.pem
+                SSLCertificateChainFile /etc/letsencrypt/live/pretix.example.com/chain.pem
+        </IfFile>
+</VirtualHost>
+```
+
+Then:
+
+```
+sudo a2ensite pretix
+systemctl restart apache2
+certbot certonly --webroot --webroot-path=/var/www/html -d pretix.example.com
+systemctl restart apache2
+```
+
+At this point, your frontend webserver should be available, with HTTPs, acting as a proxy for Pretix:
+
+https://pretix.example.com/
+
+At this point, be sure that the Pretix plaintext port is not exposed.
+
+## Pretix Notes:
 
 * https://docs.pretix.eu/en/latest/admin/installation/docker_smallscale.html#next-steps
 * https://docs.pretix.eu/en/latest/development/setup.html
 
-### Pretix Dashboard
+## Pretix Dashboard
 
 * Dashboard: `http://localhost:8000/control/`
 * User: `admin@localhost`
@@ -78,7 +141,7 @@ sudo crontab -e
 2. Create an event
 3. Start presales
 
-### License
+## License
 
 The original repository has been originally created in 2019 by the kind Cody Redmond.
 
