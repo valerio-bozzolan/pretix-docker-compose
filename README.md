@@ -1,23 +1,52 @@
 # Pretix standalone Production Environment with Docker Compose
 
-Use Pretix, standalone, with a single Docker Compose, without any need
-for any other external service.
+A Docker Compose to use Pretix, standalone, together with
+PostgreSQL and Redis.
+
+This Docker Compose assumes you already have a frontend webserver taking care
+of the SSL certificates (for example, Apache or nginx, already running on port 80 and 443).
+
+## Installation
+
+```
+git clone https://github.com/valerio-bozzolan/pretix-docker-compose.git
+```
 
 ## Configuration
 
-Copy the default configuration file:
+First, copy the default Docker environment example file:
 
 ```
-cp ./data/postfix/etc/pretix.cfg.template ./data/postfix/etc/pretix.cfg
+cp .env.example .env
 ```
 
-And fill in the blanks.
+Edit the resulting Docker env file (`.env`) and generate a new strong password for `POSTGRES_PASSWORD=...`.
+
+Then, copy the default Pretix configuration file:
+
+```
+cp ./data/pretix/etc/pretix.cfg.template ./data/pretix/etc/pretix.cfg
+```
+
+Edit the resulting Pretix confuguration file (`./data/pretix/etc/pretix.cfg`) and:
+
+- Set the same password in `password=...`
+- Set the expected URL under `url=`, like `url=https://pretix.example.com`
+- Set outgoing email credentials
 
 ## Up
+
+Startup Pretix:
 
 ```
 docker compose up
 ```
+
+The web application will be available here:
+
+http://localhost:8000
+
+To change this port, edit the file `.env` and personalize the option `PRETIX_LISTEN`.
 
 ### Cron
 
@@ -31,7 +60,7 @@ For automatic execution, just define a crontab entry:
 
 ```
 sudo crontab -e
-0 */10 * * * cd /path/to/project && docker compose run --rm pretix cron > /dev/null
+0 */10 * * * cd /path/to/pretix-docker-compose && docker compose run --rm pretix cron > /dev/null
 ```
 
 ### Pretix Notes:

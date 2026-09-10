@@ -30,7 +30,7 @@ services:
     ports:
       - "$PRETIX_LISTEN:80"
     volumes:
-      - ./data/postfix/etc/pretix.cfg:/etc/pretix/pretix.cfg
+      - ./data/pretix/etc/pretix.cfg:/etc/pretix/pretix.cfg
       - pretix_data:/data
     networks:
       - backend
